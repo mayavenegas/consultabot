@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 # Import necessary libraries
+import os
 import numpy as np
 from langchain.chains import RetrievalQA
 from langchain_huggingface import HuggingFaceEmbeddings
