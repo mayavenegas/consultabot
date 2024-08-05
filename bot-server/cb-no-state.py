@@ -139,7 +139,7 @@ class Query(BaseModel):
 
 def getBotResponse(query):
   if validate_query_relevance(vectorstore, query):
-      response = chat.invoke({"input": query})
+      response = chat.invoke({"input": query}).get('answer')
   else:
       response = '''Your input is too vague or is not related to content
       in the knowledgebase. Please rephrase.'''
