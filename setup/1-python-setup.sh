@@ -49,6 +49,11 @@ download_model_from_hf() {
     echo "LLM exists in models directory - skipping download."
   fi
 
+  git_lfs_version=$(git lfs version)
+  if [[ "$git_lfs_version" != "git-lfs*"]]; then
+    echo "Git large file support (lfs) not installed."
+    exit -1
+  fi
   model_url="https://huggingface.co/sentence-transformers"
   model_name="all-mpnet-base-v2"
   if ! [ -f $MODEL_DIR/$model_name ]; then

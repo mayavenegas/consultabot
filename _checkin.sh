@@ -9,7 +9,7 @@ echo "Disk usage:"
 du -sh .
 gitleaks detect -r .gitleaks
 cat .gitleaks
-read -p "Do you wish to continue? " yn
+#read -p "Do you wish to continue? " yn
 yn='y'
 case $yn in
   [Yy]* )

@@ -24,17 +24,18 @@ logging.basicConfig(filename=logfile, encoding='utf-8', level=loglevel, filemode
 # CONSTANTS ============================================
 #LLM_MODEL_PATH = "./llama-2-13b-chat.Q5_K_M.gguf")
 #LLM_MODEL_PATH = "./Llama-3-Instruct-8B-SPPO-Iter3-Q5_K_M.gguf"
-LLM_MODEL_PATH = "/home/ubuntu/models/Meta-Llama-3.1-8B-Instruct-Q5_K_M.gguf"
+MODELS_BASE_PATH='/home/ubuntu/models/'
+os.environ['HF_HOME'] = MODELS_BASE_PATH
+LLM_MODEL_PATH = MODELS_BASE_PATH + "Meta-Llama-3.1-8B-Instruct-Q5_K_M.gguf"
+VECTORSTORE_PATH="./"
+VECTORSTORE_FILE="LangChain_FAISS"
 
 ################################################
 # Load vector store from disk
 def loadVectorStore():
-    VECTORSTORE_PATH="./"
-    VECTORSTORE_FILE="LangChain_FAISS"
-
     print("\nRead vectorstore from disk...")
 
-    model_name = "sentence-transformers/all-mpnet-base-v2"
+    model_name = MODELS_BASE_PATH + "all-mpnet-base-v2"
     model_kwargs = {'device': 'cpu'}
     encode_kwargs = {'normalize_embeddings': False}
     _embedder = HuggingFaceEmbeddings(

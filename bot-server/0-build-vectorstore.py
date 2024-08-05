@@ -54,6 +54,8 @@ all_splits = text_splitter.split_documents(docs)
 print("Create vectorstore of doc text embeddings (~46 secs)...")
 start=time.time()
 
+# from HF
+#model_name = "sentence-transformers/all-mpnet-base-v2"
 model_name = MODELS_BASE_PATH + "all-mpnet-base-v2"
 model_kwargs = {'device': 'cuda'}   # cuda: ~46 secs, cpu:~10 mins
 encode_kwargs = {'normalize_embeddings': False}
