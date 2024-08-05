@@ -40,13 +40,24 @@ download_model_from_hf() {
 
   model_url="https://huggingface.co/lmstudio-community/Meta-Llama-3.1-8B-Instruct-GGUF/resolve/main"
   model_name=""Meta-Llama-3.1-8B-Instruct-Q5_K_M.gguf
-  wget $model_url/$model_name
-  mkdir -p $MODEL_DIR
-  mv $model_name $MODEL_DIR
+  if ! [ -f $MODEL_DIR/$model_name ]; then
+    echo "Downloading LLM: $model_name..."
+    wget $model_url/$model_name
+    mkdir -p $MODEL_DIR
+    mv $model_name $MODEL_DIR
+  else
+    echo "LLM exists in models directory - skipping download."
+  fi
 
-  # clone sentence-transformer model repo for air gapped vector store build
-  cd $MODEL_DIR
-  git clone https://huggingface.co/sentence-transformers/all-mpnet-base-v2
+  model_url="https://huggingface.co/sentence-transformers"
+  model_name="all-mpnet-base-v2"
+  if ! [ -f $MODEL_DIR/$model_name ]; then
+    echo "Cloning sentence-transformer model repo..."
+    git clone $model_url/$model_name
+    mv $model_name $MODEL_DIR
+  else
+    echo "Transformer exists in models directory - skipping download."
+  fi
 }
 
 #########################

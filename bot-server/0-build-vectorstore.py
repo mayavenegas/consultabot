@@ -10,6 +10,7 @@ from langchain_community.document_loaders import TextLoader
 from langchain_community.vectorstores import FAISS
 
 MODELS_BASE_PATH='/home/ubuntu/models/'
+os.environ['HF_HOME'] = MODELS_BASE_PATH
 KBREPO_PATH="../cb-kb-docs"
 VECTORSTORE_PATH="./"
 VECTORSTORE_FILE="LangChain_FAISS"
