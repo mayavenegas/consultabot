@@ -7,8 +7,8 @@ pushd bot-server; rm -rf logs; popd
 pushd bot-ui; rm -rf logs; popd
 echo "Disk usage:"
 du -sh .
-gitleaks detect -r .gitleaks
-cat .gitleaks
+#gitleaks detect -r .gitleaks
+#cat .gitleaks
 #read -p "Do you wish to continue? " yn
 yn='y'
 case $yn in
