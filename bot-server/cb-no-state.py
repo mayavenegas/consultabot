@@ -93,25 +93,24 @@ def loadLLM():
 # Create prompt object
 def createPrompt():
     system_prompt = '''
-<|start_header_id|>system<|end_header_id|>
-You are a helpful AI assistant for technical advice and recommendations.<|eot_id|>
-Be concise. Do not provide unhelpful responses. If you do not know the answer, say you do not know.
-Respond to the user input based only on the following context:
+        <|start_header_id|>system<|end_header_id|>
+        You are a helpful AI assistant for technical advice and recommendations.<|eot_id|>
+        Be concise. Do not provide unhelpful responses. If you do not know the answer, say you do not know.
+        Respond to the user input based only on the following context:
 
-{context}
-<|eot_id|>
-'''
-
+        {context}
+        <|eot_id|>
+        '''
     user_prompt = '''
-<|start_header_id|>user<|end_header_id|>
-{user_input}
-<|eot_id|>
-<|start_header_id|>assistant<|end_header_id|>
-'''
+        <|start_header_id|>user<|end_header_id|>
+        {user_input}
+        <|eot_id|>
+        <|start_header_id|>assistant<|end_header_id|>
+        '''
     _prompt = ChatPromptTemplate.from_messages(
         [
             ("system", system_prompt),
-            ("human", user_prompt),
+            ("user", user_prompt),
         ]
     )
     return _prompt
@@ -140,7 +139,7 @@ class Query(BaseModel):
 
 def getBotResponse(query):
   if validate_query_relevance(vectorstore, query):
-      response = chat.invoke({"query": query}).get("result")
+      response = chat.invoke({"user_input": query}).get("result")
   else:
       response = '''Your input is too vague or is not related to content
       in the knowledgebase. Please rephrase.'''
@@ -150,7 +149,7 @@ app = FastAPI()
 
 # Allow access from localhost
 # see: https://fastapi.tiangolo.com/tutorial/cors/
-
+'''
 origins = ["*"]
 '''
 origins = [
@@ -159,7 +158,7 @@ origins = [
     "http://127.0.0.1",
     "http://127.0.0.1:8000",
 ]
-'''
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
