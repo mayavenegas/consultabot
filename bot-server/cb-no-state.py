@@ -3,14 +3,12 @@
 # Import necessary libraries
 import os
 import numpy as np
-from langchain.chains import RetrievalQA
+from langchain.chains import create_retrieval_chain
+from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_community.llms import LlamaCpp
 from langchain_core.callbacks import CallbackManager, StreamingStdOutCallbackHandler
-from langchain.chains import ConversationalRetrievalChain
-from langchain.chains.conversation.memory import ConversationEntityMemory
-from langchain.chains.conversation.prompt import ENTITY_MEMORY_CONVERSATION_TEMPLATE
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -90,34 +88,46 @@ def loadLLM():
     return _llm
 
 ################################################
-# Conversational QA chain (chat history)
-def createConversationChain(_llm, _vectorstore, _st):
-    # Create a ConversationEntityMemory object if not already created
-    K = 100
-    if 'entity_memory' not in _st.session_state:
-            _st.session_state.entity_memory = ConversationEntityMemory(llm=_llm, k=K ) 
+# Create prompt object
+def createPrompt():
+    system_prompt = '''
+<|start_header_id|>system<|end_header_id|>
+You are a helpful AI assistant for technical advice and recommendations.<|eot_id|>
+Be concise. Do not provide unhelpful responses. If you do not know the answer, say you do not know.
+Respond to the user input based only on the following context:
 
-    _chat = ConversationalRetrievalChain.from_llm(
-        llm=_llm,
-        retriever=_vectorstore.as_retriever(),
-        prompt=ENTITY_MEMORY_CONVERSATION_TEMPLATE,
-        memory=_st.session_state.entity_memory
+{context}
+<|eot_id|>
+'''
+
+    user_prompt = '''
+<|start_header_id|>user<|end_header_id|>
+{user_input}
+<|eot_id|>
+<|start_header_id|>assistant<|end_header_id|>
+'''
+    _prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", system_prompt),
+            ("human", user_prompt),
+        ]
     )
-    return _chat
+    return _prompt
 
-################################################
+# ################################################
 # One-off QA chain (no memory)
-def createQAChain(_llm, _vectorstore):
-    _chat = RetrievalQA.from_chain_type(
-        llm=_llm,
-        retriever=_vectorstore.as_retriever()
-    )
+def createQAChain(_llm, _vectorstore, _prompt):
+    question_answer_chain = create_stuff_documents_chain(_llm, _prompt)
+    _chat = create_retrieval_chain(
+        _vectorstore.as_retriever(),
+        question_answer_chain)    
     return _chat
 
 # Instantiate Q&A chain ========================
 vectorstore = loadVectorStore()
 llm = loadLLM()
-chat = createQAChain(llm, vectorstore)
+prompt = createPrompt()
+chat = createQAChain(llm, vectorstore, prompt)
 
 ################################################
 # see:
