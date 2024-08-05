@@ -103,7 +103,7 @@ def createPrompt():
         '''
     user_prompt = '''
         <|start_header_id|>user<|end_header_id|>
-        {user_input}
+        {input}
         <|eot_id|>
         <|start_header_id|>assistant<|end_header_id|>
         '''
@@ -139,7 +139,7 @@ class Query(BaseModel):
 
 def getBotResponse(query):
   if validate_query_relevance(vectorstore, query):
-      response = chat.invoke({"user_input": query}).get("result")
+      response = chat.invoke({"input": query}).get("result")
   else:
       response = '''Your input is too vague or is not related to content
       in the knowledgebase. Please rephrase.'''
