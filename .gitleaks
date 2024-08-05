@@ -1,0 +1,22 @@
+[
+ {
+  "Description": "Generic API Key",
+  "StartLine": 38,
+  "EndLine": 38,
+  "StartColumn": 1020,
+  "EndColumn": 1045,
+  "Match": "Key-Pair-Id=K3ESJI6DHPFC7 ",
+  "Secret": "K3ESJI6DHPFC7",
+  "File": "bot-server/logs/consultabot.log",
+  "SymlinkFile": "",
+  "Commit": "1d7fa5737fcb534fc60fd163708a151d644d6ab8",
+  "Entropy": 3.7004397,
+  "Author": "Joseph Hunt",
+  "Email": "jodyhunt@hotmail.com",
+  "Date": "2024-08-05T16:17:43Z",
+  "Message": "new repo",
+  "Tags": [],
+  "RuleID": "generic-api-key",
+  "Fingerprint": "1d7fa5737fcb534fc60fd163708a151d644d6ab8:bot-server/logs/consultabot.log:generic-api-key:38"
+ }
+]
