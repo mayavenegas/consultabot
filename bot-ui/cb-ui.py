@@ -10,11 +10,11 @@ BASE_URL="http://localhost:9000"
 NOAUTH_HEADERS = { "Content-Type": "application/json" }
 PAGE_TITLE = "🤖 ConsultaBot! (GREEN) 🧠 "
 THINKING_MSGS = [
-    "Gimme a sec, thinking...",
+    "Gimme a sec to research that...",
     "Mulling this over, uno momento..",
-    "Interesting, let me ponder a moment...",
+    "Let me gather my thoughts on that...",
     "Thanks for your input, pondering...",
-    "I'd not thought of that before, lesseee...",
+    "Please allow me a moment to compose my thoughts...",
 ]
 LOGFILE = "./logs/cb-ui.log"
 FEEDBACKLOG = "./logs/feedback.log"
