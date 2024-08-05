@@ -1,0 +1,7 @@
+AWS Machine specs
+- AMI: Deep Learning Base OSS Nvidia Driver GPU AMI (Ubuntu 22.04) 20240708
+- Instance type: g4dn (any size)
+- 128GB HDD
+run: nvidia-smi
+to verify NVidia drivers are installed and connected.
+

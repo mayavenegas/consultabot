@@ -1,0 +1,6 @@
+- machine per specs
+- setup/ubuntu-update.sh
+- build llama-cpp
+- install nginx
+- install mkcert, gen cert/key, cp to /etc/nginx
+- pip3 install langchain_community langchain_huggingface faiss-gpu streamlit
