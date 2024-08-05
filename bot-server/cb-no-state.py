@@ -73,6 +73,7 @@ def loadLLM():
 
     # Callbacks support token-wise streaming
     callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+    max_tokens=4096
     temp=0              # stick to the facts
     n_gpu_layers = -1   # -1 to move all to GPU.
     n_ctx = 4096        # Context window
@@ -80,6 +81,7 @@ def loadLLM():
 
     _llm = LlamaCpp(
         model_path=LLM_MODEL_PATH,
+        max_tokens=max_tokens,
         temperature=temp,
         n_gpu_layers=n_gpu_layers,
         n_ctx=n_ctx,
