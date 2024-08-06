@@ -70,15 +70,12 @@ def get_text():
                             placeholder="ConsultaBot is here to help! Ask me anything related to Conjur Cloud...", 
                             on_change=clear_text,    
                             label_visibility='hidden')
-    input_text = st.session_state["temp"]
+#    input_text = st.session_state["temp"]
     return input_text
 
 #####################################################
-# Define function to start a new chat
+# Clears session state and starts a new chat.
 def new_chat():
-    """
-    Clears session state and starts a new chat.
-    """
     save = []
     for i in range(len(st.session_state['generated'])-1, -1, -1):
         save.append("User:" + st.session_state["past"][i])
@@ -90,22 +87,10 @@ def new_chat():
     st.session_state.entity_memory.store = {}
     st.session_state.entity_memory.buffer.clear()
 
-# Set up sidebar with various options
-#with st.sidebar.expander("🛠️ ", expanded=False):
-#    # Option to preview memory store
-#    if st.checkbox("Preview memory store"):
-#        with st.expander("Memory-Store", expanded=False):
-#            st.session_state.entity_memory.store
-#    # Option to preview memory buffer
-#    if st.checkbox("Preview memory buffer"):
-#        with st.expander("Buffer-Store", expanded=False):
-#            st.session_state.entity_memory.buffer
-#    MODEL = st.selectbox(label='Model', options=['gpt-3.5-turbo','text-davinci-003','text-davinci-002','code-davinci-002'])
-#    K = st.number_input(' (#)Summary of prompts to consider',min_value=3,max_value=1000)
-
 user_text = get_text()
 if user_text:
-    with st.spinner(random.choice(THINKING_MSGS)):
+    msg = random.choice(THINKING_MSGS)
+    with st.spinner(msg):
         user_input = {"data": user_text}
         logging.info(f"user_input: {user_input}")
         url = BASE_URL+"/query"
