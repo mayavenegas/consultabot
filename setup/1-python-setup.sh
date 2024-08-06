@@ -91,7 +91,7 @@ install_python_libs() {
                 uvicorn[standard]
   echo
   echo "bot-ui libs"
-  time pip3 install streamlit
+  time pip3 install streamlit langfuse
 }
 
 #########################

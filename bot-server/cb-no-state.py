@@ -15,6 +15,13 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
+from langfuse.callback import CallbackHandler
+langfuse_handler = CallbackHandler(
+  secret_key=os.environ['LF_SECRET_KEY'],
+  public_key=os.environ['LF_PUBLIC_KEY'],
+  host="https://us.cloud.langfuse.com"
+)
+
 # LOGGING ============================================
 import logging
 logfile = "./logs/consultabot.log"
@@ -61,7 +68,7 @@ def validate_query_relevance(_vectorstore, query_text, k=5, max_score=1):
         query=query_text,
         k=k,
     )
-    logging.info("Doc search scores for: {query_text}:")
+    logging.info(f"Doc search scores for: {query_text}:")
     for i in range(0,len(docs)):
         logging.info(f"\t{docs[i][1]}")
     # return True if all scores <= max_score
@@ -148,7 +155,7 @@ class Query(BaseModel):
 def getBotResponse(query):
   if validate_query_relevance(vectorstore, query):
       logging.debug(f"query: {query}")
-      raw_response = chat.invoke({"input": query})
+      raw_response = chat.invoke({"input": query}, config={"callbacks": [langfuse_handler]})
       logging.debug(f"raw_response: {raw_response}")
       response = raw_response.get('answer')
   else:
