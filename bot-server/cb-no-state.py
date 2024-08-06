@@ -34,7 +34,7 @@ VECTORSTORE_FILE="LangChain_FAISS"
 ################################################
 # Load vector store from disk
 def loadVectorStore():
-    print("\nRead vectorstore from disk...")
+    logging.info("Read vectorstore from disk...")
 
     model_name = MODELS_BASE_PATH + "all-mpnet-base-v2"
     model_kwargs = {'device': 'cpu'}
