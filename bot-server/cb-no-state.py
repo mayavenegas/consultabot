@@ -21,6 +21,8 @@ langfuse_handler = CallbackHandler(
   public_key=os.environ['LF_PUBLIC_KEY'],
   host="https://us.cloud.langfuse.com"
 )
+print(os.environ['LF_SECRET_KEY'])
+print(os.environ['LF_PUBLIC_KEY'])
 
 # LOGGING ============================================
 import logging
