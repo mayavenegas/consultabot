@@ -101,13 +101,18 @@ def loadLLM():
 '''
 def createPrompt():
     system_prompt = '''
+        <|start_header_id|>system<|end_header_id|>
         You are a helpful AI assistant for technical advice and recommendations.<|eot_id|>
         Be concise. Do not provide unhelpful responses. If you do not know the answer, say you do not know.
         Respond to the user input based only on the following context:
         {context}
+        <|eot_id|>
         '''
     user_prompt = '''
+        <|start_header_id|>user<|end_header_id|>
         {input}
+        <|eot_id|>
+        <|start_header_id|>assistant<|end_header_id|>
         '''
     _prompt = ChatPromptTemplate.from_messages(
         [
@@ -142,7 +147,10 @@ class Query(BaseModel):
 
 def getBotResponse(query):
   if validate_query_relevance(vectorstore, query):
-      response = chat.invoke({"input": query}).get('answer')
+      logging.debug(f"query: {query}")
+      raw_response = chat.invoke({"input": query})
+      logging.debug(f"raw_response: {raw_response}")
+      response = raw_response.get('answer')
   else:
       response = '''Your input is too vague or is not related to content
       in the knowledgebase. Please rephrase.'''
