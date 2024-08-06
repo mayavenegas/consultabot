@@ -8,7 +8,7 @@ import requests, json, random, logging, time, datetime
 # Constants ============================================
 BASE_URL="http://localhost:9000"
 NOAUTH_HEADERS = { "Content-Type": "application/json" }
-PAGE_TITLE = "🤖 ConsultaBot! (GREEN) 🧠 "
+PAGE_TITLE = "🤖 ConsultaBot! (BLUE) 🧠 "
 THINKING_MSGS = [
     "Gimme a sec to research that...",
     "Mulling this over, uno momento..",
@@ -169,6 +169,8 @@ with st.sidebar:
     change_log='''
     24-08-05:<br>
       - KB docs in separate repo<br>
+      - Added system prompt<br>
+      - Maxxed out max_tokens<br>
     24-08-02:<br>
       - Validate query relevance<br>
       - Thinking spinner<br>
