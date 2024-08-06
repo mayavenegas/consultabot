@@ -153,6 +153,8 @@ with st.sidebar:
 
     st.markdown("# Change History")
     change_log='''
+    24-08-06:<br>
+      - 
     24-08-05:<br>
       - KB docs in separate repo<br>
       - Added system prompt<br>
