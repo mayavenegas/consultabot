@@ -61,8 +61,9 @@ def validate_query_relevance(_vectorstore, query_text, k=5, max_score=1):
         query=query_text,
         k=k,
     )
+    logging.info("Doc search scores for: {query_text}:")
     for i in range(0,len(docs)):
-        print(docs[i][1])
+        logging.info(f"\t{docs[i][1]}")
     # return True if all scores <= max_score
     return all(score <= max_score for (_, score) in docs)
 
