@@ -19,7 +19,7 @@ from langfuse.callback import CallbackHandler
 langfuse_handler = CallbackHandler(
   secret_key=os.environ['LF_SECRET_KEY'],
   public_key=os.environ['LF_PUBLIC_KEY'],
-  host="https://us.cloud.langfuse.com"
+  host=os.environ['LF_HOST']
 )
 langfuse_handler.auth_check()
 
