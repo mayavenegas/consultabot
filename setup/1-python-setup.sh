@@ -50,18 +50,20 @@ download_model_from_hf() {
   fi
 
   git_lfs_version=$(git lfs version)
-  if [[ "$git_lfs_version" != "git-lfs*"]]; then
-    echo "Git large file support (lfs) not installed."
-    exit -1
-  fi
-  model_url="https://huggingface.co/sentence-transformers"
-  model_name="all-mpnet-base-v2"
-  if ! [ -f $MODEL_DIR/$model_name ]; then
-    echo "Cloning sentence-transformer model repo..."
-    git clone $model_url/$model_name
-    mv $model_name $MODEL_DIR
+  echo "git_lfs_version: /$git_lfs_version/"
+  if [[ $git_lfs_version == git-lfs* ]]; then
+    model_url="https://huggingface.co/sentence-transformers"
+    model_name="all-mpnet-base-v2"
+    if ! [ -d $MODEL_DIR/$model_name ]; then
+      echo "Cloning sentence-transformer model repo..."
+      git clone $model_url/$model_name
+      mv $model_name $MODEL_DIR
+    else
+      echo "Transformer exists in models directory - skipping download."
+    fi
   else
-    echo "Transformer exists in models directory - skipping download."
+    echo "git lfs (large file support) is not installed"
+    exit -1
   fi
 }
 
