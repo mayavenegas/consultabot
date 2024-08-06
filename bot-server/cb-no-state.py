@@ -21,6 +21,7 @@ langfuse_handler = CallbackHandler(
   public_key=os.environ['LF_PUBLIC_KEY'],
   host=os.environ['LF_HOST']
 )
+print(langfuse_handler)
 langfuse_handler.auth_check()
 
 # LOGGING ============================================
