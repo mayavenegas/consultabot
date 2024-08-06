@@ -69,7 +69,7 @@ def validate_query_relevance(_vectorstore, query_text, k=5, max_score=1):
 ################################################
 # Load LLM from disk
 def loadLLM():
-    print("\nLoading LLM from disk...")
+    logging.info("Loading LLM from disk...")
 
     # Callbacks support token-wise streaming
     callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
@@ -87,7 +87,7 @@ def loadLLM():
         n_ctx=n_ctx,
         n_batch=n_batch,
         callback_manager=callback_manager,
-        verbose=True,  # Verbose is required to pass to the callback manager
+        verbose=False,  # Verbose is required to pass to the callback manager
     )
     return _llm
 
@@ -119,21 +119,22 @@ def createPrompt():
 
 # ################################################
 # One-off QA chain (no memory)
-def createQAChain(_llm, _vectorstore, _prompt):
+def createQAChain(_vectorstore, _llm, _prompt):
     question_answer_chain = create_stuff_documents_chain(_llm, _prompt)
     _chat = create_retrieval_chain(
-        _vectorstore.as_retriever(),
-        question_answer_chain)    
+                    _vectorstore.as_retriever(),
+                    question_answer_chain
+    )    
     return _chat
 
 # Instantiate Q&A chain ========================
 vectorstore = loadVectorStore()
 llm = loadLLM()
 prompt = createPrompt()
-chat = createQAChain(llm, vectorstore, prompt)
+chat = createQAChain(vectorstore, llm, prompt)
 
 ################################################
-# see:
+# Define structure of query payload, see:
 # - https://fastapi.tiangolo.com/tutorial/body/
 # - https://stackoverflow.com/questions/64057445/fastapi-post-does-not-recognize-my-parameter
 class Query(BaseModel):
@@ -151,9 +152,6 @@ app = FastAPI()
 
 # Allow access from localhost
 # see: https://fastapi.tiangolo.com/tutorial/cors/
-'''
-origins = ["*"]
-'''
 origins = [
     "http://localhost",
     "http://localhost:8000",
