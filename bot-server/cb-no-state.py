@@ -94,26 +94,25 @@ def loadLLM():
 
 ################################################
 # Create prompt object
+'''
+        <|start_header_id|>system<|end_header_id|>        <|eot_id|>
+        <|start_header_id|>user<|end_header_id|>        <|eot_id|>
+        <|start_header_id|>assistant<|end_header_id|>
+'''
 def createPrompt():
     system_prompt = '''
-        <|start_header_id|>system<|end_header_id|>
         You are a helpful AI assistant for technical advice and recommendations.<|eot_id|>
         Be concise. Do not provide unhelpful responses. If you do not know the answer, say you do not know.
         Respond to the user input based only on the following context:
-
         {context}
-        <|eot_id|>
         '''
     user_prompt = '''
-        <|start_header_id|>user<|end_header_id|>
         {input}
-        <|eot_id|>
-        <|start_header_id|>assistant<|end_header_id|>
         '''
     _prompt = ChatPromptTemplate.from_messages(
         [
             ("system", system_prompt),
-            ("user", user_prompt),
+            ("human", user_prompt),
         ]
     )
     return _prompt
