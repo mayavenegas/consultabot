@@ -66,11 +66,13 @@ def clear_text():
 #####################################################
 # Define function to get user input
 def get_text():
-    input_text = st.text_input("You: ", st.session_state["input"], key="input", 
+    input_text = st.text_input("You: ",
+                            st.session_state["input"],
+                            key="input", 
                             placeholder="ConsultaBot is here to help! Ask me anything related to Conjur Cloud...", 
                             on_change=clear_text,    
                             label_visibility='hidden')
-#    input_text = st.session_state["temp"]
+    input_text = st.session_state["temp"]
     return input_text
 
 #####################################################
@@ -89,10 +91,9 @@ def new_chat():
 
 user_text = get_text()
 if user_text:
-    msg = random.choice(THINKING_MSGS)
-    with st.spinner(msg):
+    logging.info(f"user_text: {user_text}")
+    with st.spinner(random.choice(THINKING_MSGS)):
         user_input = {"data": user_text}
-        logging.info(f"user_input: {user_input}")
         url = BASE_URL+"/query"
         payload = json.dumps(user_input)
         llm_output = json.loads(requests.request("POST", url, headers=NOAUTH_HEADERS, data=payload).text)
