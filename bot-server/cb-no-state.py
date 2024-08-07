@@ -15,14 +15,11 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
+# for tracing
 from langfuse.callback import CallbackHandler
-langfuse_handler = CallbackHandler(
-  secret_key=os.environ['LF_SECRET_KEY'],
-  public_key=os.environ['LF_PUBLIC_KEY'],
-  host=os.environ['LF_HOST']
-)
-print(langfuse_handler)
-langfuse_handler.auth_check()
+lf_skey=os.environ['LANGFUSE_SECRET_KEY']
+lf_pkey=os.environ['LANGFUSE_PUBLIC_KEY']
+lf_host=os.environ['LANGFUSE_HOST']
 
 # LOGGING ============================================
 import logging
@@ -141,6 +138,11 @@ def createQAChain(_vectorstore, _llm, _prompt):
     )    
     return _chat
 
+# ################################################
+# empty callback function hack to prevent empty responses
+def emptyCallback():
+    foo=1+1
+
 # Instantiate Q&A chain ========================
 vectorstore = loadVectorStore()
 llm = loadLLM()
@@ -157,7 +159,11 @@ class Query(BaseModel):
 def getBotResponse(query):
   if validate_query_relevance(vectorstore, query):
       logging.debug(f"query: {query}")
+''' == for tracing
+      langfuse_handler = CallbackHandler(secret_key=lf_skey,public_key=lf_pkey,host=lf_host)
       raw_response = chat.invoke({"input": query}, config={"callbacks": [langfuse_handler]})
+'''
+      raw_response = chat.invoke({"input": query}, config={"callbacks": [emptyCallback]})
       logging.debug(f"raw_response: {raw_response}")
       response = raw_response.get('answer')
   else:
