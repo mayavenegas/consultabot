@@ -158,11 +158,11 @@ class Query(BaseModel):
 
 def getBotResponse(query):
   if validate_query_relevance(vectorstore, query):
-      logging.debug(f"query: {query}")
-''' == for tracing
+    ''' == for tracing
       langfuse_handler = CallbackHandler(secret_key=lf_skey,public_key=lf_pkey,host=lf_host)
       raw_response = chat.invoke({"input": query}, config={"callbacks": [langfuse_handler]})
-'''
+    '''
+      logging.debug(f"query: {query}")
       raw_response = chat.invoke({"input": query}, config={"callbacks": [emptyCallback]})
       logging.debug(f"raw_response: {raw_response}")
       response = raw_response.get('answer')
