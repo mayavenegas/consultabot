@@ -140,8 +140,22 @@ def createQAChain(_vectorstore, _llm, _prompt):
 
 # ################################################
 # empty callback function hack to prevent empty responses
-def emptyCallback(BaseCallbackHandler):
-    foo=1+1
+class emptyCallbackHandler(BaseCallbackHandler):
+    def on_chat_model_start(
+        self, serialized: Dict[str, Any], messages: List[List[BaseMessage]], **kwargs
+    ) -> None:
+        print("Chat model started")
+
+    def on_llm_end(self, response: LLMResult, **kwargs) -> None:
+        print(f"Chat model ended, response: {response}")
+
+    def on_chain_start(
+        self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs
+    ) -> None:
+        print(f"Chain {serialized.get('name')} started")
+
+    def on_chain_end(self, outputs: Dict[str, Any], **kwargs) -> None:
+        print(f"Chain ended, outputs: {outputs}")
 
 # Instantiate Q&A chain ========================
 vectorstore = loadVectorStore()
@@ -163,7 +177,7 @@ def getBotResponse(query):
         raw_response = chat.invoke({"input": query}, config={"callbacks": [langfuse_handler]})
         '''
         logging.debug(f"query: {query}")
-        raw_response = chat.invoke({"input": query}, config={"callbacks": [emptyCallback]})
+        raw_response = chat.invoke({"input": query}, config={"callbacks": [emptyCallbackHandler()]})
         logging.debug(f"raw_response: {raw_response}")
         response = raw_response.get('answer')
     else:
