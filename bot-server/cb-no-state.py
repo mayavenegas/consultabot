@@ -147,18 +147,18 @@ class emptyCallbackHandler(BaseCallbackHandler):
     def on_chat_model_start(
         self, serialized: Dict[str, Any], messages: List[List[BaseMessage]], **kwargs
     ) -> None:
-        print("Chat model started")
+        foo=1
 
     def on_llm_end(self, response: LLMResult, **kwargs) -> None:
-        print(f"Chat model ended, response: {response}")
+        foo=1
 
     def on_chain_start(
         self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs
     ) -> None:
-        print(f"Chain {serialized.get('name')} started")
+        foo=1
 
     def on_chain_end(self, outputs: Dict[str, Any], **kwargs) -> None:
-        print(f"Chain ended, outputs: {outputs}")
+        foo=1
 
 # Instantiate Q&A chain ========================
 vectorstore = loadVectorStore()
