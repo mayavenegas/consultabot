@@ -140,7 +140,7 @@ def createQAChain(_vectorstore, _llm, _prompt):
 
 # ################################################
 # empty callback function hack to prevent empty responses
-def emptyCallback():
+def emptyCallback(BaseCallbackHandler):
     foo=1+1
 
 # Instantiate Q&A chain ========================
