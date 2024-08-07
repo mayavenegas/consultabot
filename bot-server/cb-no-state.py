@@ -109,6 +109,7 @@ def loadLLM():
         <|start_header_id|>assistant<|end_header_id|>
 '''
 def createPrompt():
+    print("context length: {}".format(context}")
     system_prompt = '''
         <|start_header_id|>system<|end_header_id|>
         You are a helpful AI assistant for technical advice and recommendations.<|eot_id|>
@@ -144,21 +145,61 @@ def createQAChain(_vectorstore, _llm, _prompt):
 # ################################################
 # empty callback hack to prevent empty responses
 class emptyCallbackHandler(BaseCallbackHandler):
-    def on_chat_model_start(
-        self, serialized: Dict[str, Any], messages: List[List[BaseMessage]], **kwargs
-    ) -> None:
-        print("Chat model started")
+    def on_llm_start(
+        self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
+    ) -> Any:
+        """Run when LLM starts running."""
 
-    def on_llm_end(self, response: LLMResult, **kwargs) -> None:
-        print("Chat model ended")
+    def on_chat_model_start(
+        self, serialized: Dict[str, Any], messages: List[List[BaseMessage]], **kwargs: Any
+    ) -> Any:
+        """Run when Chat Model starts running."""
+
+    def on_llm_new_token(self, token: str, **kwargs: Any) -> Any:
+        """Run on new LLM token. Only available when streaming is enabled."""
+
+    def on_llm_end(self, response: LLMResult, **kwargs: Any) -> Any:
+        """Run when LLM ends running."""
+
+    def on_llm_error(
+        self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
+    ) -> Any:
+        """Run when LLM errors."""
 
     def on_chain_start(
-        self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs
-    ) -> None:
-        print(f"Chain {serialized.get('name')} started")
+        self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs: Any
+    ) -> Any:
+        """Run when chain starts running."""
 
-    def on_chain_end(self, outputs: Dict[str, Any], **kwargs) -> None:
-        print("Chain ended")
+    def on_chain_end(self, outputs: Dict[str, Any], **kwargs: Any) -> Any:
+        """Run when chain ends running."""
+
+    def on_chain_error(
+        self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
+    ) -> Any:
+        """Run when chain errors."""
+
+    def on_tool_start(
+        self, serialized: Dict[str, Any], input_str: str, **kwargs: Any
+    ) -> Any:
+        """Run when tool starts running."""
+
+    def on_tool_end(self, output: Any, **kwargs: Any) -> Any:
+        """Run when tool ends running."""
+
+    def on_tool_error(
+        self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
+    ) -> Any:
+        """Run when tool errors."""
+
+    def on_text(self, text: str, **kwargs: Any) -> Any:
+        """Run on arbitrary text."""
+
+    def on_agent_action(self, action: AgentAction, **kwargs: Any) -> Any:
+        """Run on agent action."""
+
+    def on_agent_finish(self, finish: AgentFinish, **kwargs: Any) -> Any:
+        """Run on agent end.""
 
 # Instantiate Q&A chain ========================
 vectorstore = loadVectorStore()
