@@ -225,7 +225,7 @@ def getBotResponse(query):
         raw_response = chat.invoke({"input": query}, config={"callbacks": [langfuse_handler]})
         '''
         logging.debug(f"query: {query}")
-        raw_response = chat.invoke({"input": query}, config={"callbacks": [emptyCallbackHandler()]})
+        raw_response = chat.invoke({"input": query}, config={"callbacks": [debugCallbackHandler()]})
         logging.debug(f"raw_response: {raw_response}")
         response = raw_response.get('answer')
     else:
