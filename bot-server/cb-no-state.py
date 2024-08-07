@@ -109,7 +109,6 @@ def loadLLM():
         <|start_header_id|>assistant<|end_header_id|>
 '''
 def createPrompt():
-    print("context length: {}".format(context}")
     system_prompt = '''
         <|start_header_id|>system<|end_header_id|>
         You are a helpful AI assistant for technical advice and recommendations.<|eot_id|>
