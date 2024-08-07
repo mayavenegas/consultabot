@@ -143,17 +143,19 @@ def createQAChain(_vectorstore, _llm, _prompt):
     return _chat
 
 # ################################################
-# empty callback hack to prevent empty responses
-class emptyCallbackHandler(BaseCallbackHandler):
+# Class to trace chain execution, inputs & outputs
+class debugCallbackHandler(BaseCallbackHandler):
     def on_llm_start(
         self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
     ) -> Any:
         print(f"LLM {serialized.get('name')} started")
+        print(f"prompts: {prompts}")
 
     def on_chat_model_start(
         self, serialized: Dict[str, Any], messages: List[List[BaseMessage]], **kwargs: Any
     ) -> Any:
         print(f"Chat {serialized.get('name')} started")
+        print(f"messages: {messages}")
 
     def on_llm_new_token(self, token: str, **kwargs: Any) -> Any:
         """Run on new LLM token. Only available when streaming is enabled."""
@@ -170,6 +172,7 @@ class emptyCallbackHandler(BaseCallbackHandler):
         self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs: Any
     ) -> Any:
         print(f"Chain {serialized.get('name')} started")
+        print(f"inputs: {inputs}")
 
     def on_chain_end(self, outputs: Dict[str, Any], **kwargs: Any) -> Any:
         print(f"Chain ended, outputs: {outputs}")
@@ -183,9 +186,10 @@ class emptyCallbackHandler(BaseCallbackHandler):
         self, serialized: Dict[str, Any], input_str: str, **kwargs: Any
     ) -> Any:
         print(f"Tool {serialized.get('name')} started")
+        print(f"input_str: {input_str}")
 
     def on_tool_end(self, output: Any, **kwargs: Any) -> Any:
-        print(f"Tool ended, outputs: {outputs}")
+        print(f"Tool ended, outputs: {output}")
 
     def on_tool_error(
         self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
