@@ -142,23 +142,23 @@ def createQAChain(_vectorstore, _llm, _prompt):
     return _chat
 
 # ################################################
-# empty callback function hack to prevent empty responses
+# empty callback hack to prevent empty responses
 class emptyCallbackHandler(BaseCallbackHandler):
     def on_chat_model_start(
         self, serialized: Dict[str, Any], messages: List[List[BaseMessage]], **kwargs
     ) -> None:
-        foo=1
+        print("Chat model started")
 
     def on_llm_end(self, response: LLMResult, **kwargs) -> None:
-        foo=1
+        print("Chat model ended")
 
     def on_chain_start(
         self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs
     ) -> None:
-        foo=1
+        print(f"Chain {serialized.get('name')} started")
 
     def on_chain_end(self, outputs: Dict[str, Any], **kwargs) -> None:
-        foo=1
+        print("Chain ended")
 
 # Instantiate Q&A chain ========================
 vectorstore = loadVectorStore()
