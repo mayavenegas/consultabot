@@ -162,6 +162,8 @@ class debugCallbackHandler(BaseCallbackHandler):
 
     def on_llm_end(self, response: LLMResult, **kwargs: Any) -> Any:
         print("LLM ended.")
+        print(f"response: {response}")
+        print("="*40)
 
     def on_llm_error(
         self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
@@ -176,6 +178,7 @@ class debugCallbackHandler(BaseCallbackHandler):
 
     def on_chain_end(self, outputs: Dict[str, Any], **kwargs: Any) -> Any:
         print(f"Chain ended, outputs: {outputs}")
+        print("="*40)
 
     def on_chain_error(
         self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
@@ -190,6 +193,7 @@ class debugCallbackHandler(BaseCallbackHandler):
 
     def on_tool_end(self, output: Any, **kwargs: Any) -> Any:
         print(f"Tool ended, outputs: {output}")
+        print("="*40)
 
     def on_tool_error(
         self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
