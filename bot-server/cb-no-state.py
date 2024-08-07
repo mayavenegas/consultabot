@@ -198,7 +198,7 @@ class emptyCallbackHandler(BaseCallbackHandler):
         """Run on agent action."""
 
     def on_agent_finish(self, finish: AgentFinish, **kwargs: Any) -> Any:
-        """Run on agent end.""
+        """Run on agent end."""
 
 # Instantiate Q&A chain ========================
 vectorstore = loadVectorStore()
