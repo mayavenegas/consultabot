@@ -143,61 +143,69 @@ def createQAChain(_vectorstore, _llm, _prompt):
 
 # ################################################
 # Class to trace chain execution, inputs & outputs
+INDENT=2
+indent=0
 class debugCallbackHandler(BaseCallbackHandler):
     def on_llm_start(
         self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
     ) -> Any:
-        print(f"LLM {serialized.get('name')} started")
-        print(f"prompts: {prompts}")
+        print(" "*indent, f"LLM {serialized.get('name')} started")
+        print(" "*indent, f"prompts: {prompts}")
+        indent += INDENT
 
     def on_chat_model_start(
         self, serialized: Dict[str, Any], messages: List[List[BaseMessage]], **kwargs: Any
     ) -> Any:
-        print(f"Chat {serialized.get('name')} started")
-        print(f"messages: {messages}")
+        print(" "*indent, f"Chat {serialized.get('name')} started")
+        print(" "*indent, f"messages: {messages}")
 
     def on_llm_new_token(self, token: str, **kwargs: Any) -> Any:
         """Run on new LLM token. Only available when streaming is enabled."""
 
     def on_llm_end(self, response: LLMResult, **kwargs: Any) -> Any:
-        print("LLM ended.")
-        print(f"response: {response}")
-        print("="*40)
+        print(" "*indent, "LLM ended.")
+        print(" "*indent, f"response: {response}")
+        print(" "*indent, "="*40)
+        indent -= INDENT
 
     def on_llm_error(
         self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
     ) -> Any:
-        print(f"LLM error: {error}")
+        print(" "*indent, f"LLM error: {error}")
 
     def on_chain_start(
         self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs: Any
     ) -> Any:
-        print(f"Chain {serialized.get('name')} started")
-        print(f"inputs: {inputs}")
+        print(" "*indent, f"Chain {serialized.get('name')} started")
+        print(" "*indent, f"inputs: {inputs}")
+        indent += INDENT
 
     def on_chain_end(self, outputs: Dict[str, Any], **kwargs: Any) -> Any:
-        print(f"Chain ended, outputs: {outputs}")
-        print("="*40)
+        print(" "*indent, f"Chain ended, outputs: {outputs}")
+        print(" "*indent, "="*40)
+        indent -= INDENT
 
     def on_chain_error(
         self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
     ) -> Any:
-        print(f"Chain error: {error}")
+        print(" "*indent, " "*indent, f"Chain error: {error}")
 
     def on_tool_start(
         self, serialized: Dict[str, Any], input_str: str, **kwargs: Any
     ) -> Any:
-        print(f"Tool {serialized.get('name')} started")
-        print(f"input_str: {input_str}")
+        print(" "*indent, f"Tool {serialized.get('name')} started")
+        print(" "*indent, f"input_str: {input_str}")
+        indent += INDENT
 
     def on_tool_end(self, output: Any, **kwargs: Any) -> Any:
         print(f"Tool ended, outputs: {output}")
         print("="*40)
+        indent -= INDENT
 
     def on_tool_error(
         self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
     ) -> Any:
-        print(f"Tool error: {error}")
+        print(" "*indent, f"Tool error: {error}")
 
     def on_text(self, text: str, **kwargs: Any) -> Any:
         """Run on arbitrary text."""
