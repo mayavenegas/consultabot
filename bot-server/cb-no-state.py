@@ -19,11 +19,13 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
+'''
 # for tracing
 from langfuse.callback import CallbackHandler
 lf_skey=os.environ['LANGFUSE_SECRET_KEY']
 lf_pkey=os.environ['LANGFUSE_PUBLIC_KEY']
 lf_host=os.environ['LANGFUSE_HOST']
+'''
 
 # LOGGING ============================================
 import logging
