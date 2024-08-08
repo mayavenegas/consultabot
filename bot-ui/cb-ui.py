@@ -153,11 +153,12 @@ with st.sidebar:
 
     st.markdown("# Change History")
     change_log='''
-    24-08-06:<br>
-      - 
+    24-08-08:<br>
+      - fixed empty response bug (?)<br>
     24-08-05:<br>
       - KB docs in separate repo<br>
-      - Added system prompt<br>
+      - Added Lllama 3 system prompt<br>
+      - refactored retrieval chain<br>
       - Maxxed out max_tokens<br>
     24-08-02:<br>
       - Validate query relevance<br>
