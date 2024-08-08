@@ -98,7 +98,7 @@ def loadLLM():
         n_ctx=n_ctx,
         n_batch=n_batch,
         callback_manager=callback_manager,
-        verbose=True,  # Verbose is required to pass to the callback manager
+        verbose=False,  # Verbose is required to pass to the callback manager
     )
     return _llm
 
