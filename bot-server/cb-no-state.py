@@ -84,7 +84,7 @@ def loadLLM():
 
     # Callbacks support token-wise streaming
     callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
-    max_tokens=2048
+    max_tokens=4096
     temp=0              # stick to the facts
     n_gpu_layers = -1   # -1 to move all to GPU.
     n_ctx = 4096        # Context window
@@ -110,20 +110,11 @@ def loadLLM():
         <|start_header_id|>assistant<|end_header_id|>
 '''
 def createPrompt():
-    system_prompt = '''
-        <|start_header_id|>system<|end_header_id|>
-        You are a helpful AI assistant for technical advice and recommendations.<|eot_id|>
+    system_prompt = '''You are a helpful AI assistant for technical advice and recommendations.<|eot_id|>
         Be concise. Do not provide unhelpful responses. If you do not know the answer, say you do not know.
         Respond to the user input based only on the following context:
-        {context}
-        <|eot_id|>
-        '''
-    user_prompt = '''
-        <|start_header_id|>user<|end_header_id|>
-        {input}
-        <|eot_id|>
-        <|start_header_id|>assistant<|end_header_id|>
-        '''
+        {context}'''
+    user_prompt = '''{input}'''
     _prompt = ChatPromptTemplate.from_messages(
         [
             ("system", system_prompt),
@@ -215,7 +206,7 @@ llm = loadLLM()
 prompt = createPrompt()
 chat = createQAChain(vectorstore, llm, prompt)
 
-################################################
+# ------------------------------------------------------------------------------
 # Define structure of query payload, see:
 # - https://fastapi.tiangolo.com/tutorial/body/
 # - https://stackoverflow.com/questions/64057445/fastapi-post-does-not-recognize-my-parameter
