@@ -88,7 +88,7 @@ def loadLLM():
     callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
     max_tokens = 4096
     temp = 0            # stick to the facts
-    n_gpu_layers = -1   # -1 to move all to GPU.
+    n_gpu_layers = 43   # -1 to move all to GPU.
     n_ctx = 4096        # Context window
     n_batch = 512       # Should be between 1 and n_ctx, consider the amount of VRAM in your GPU.
 
